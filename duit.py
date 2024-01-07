@@ -7,7 +7,7 @@ root.title("Hitung Hitung")
 mainframe = ttk.Frame(root, padding="3 3 12 12")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 
-def add_data():
+def add_data(_args):
     global total_uang
     print( 'jumlah uang', jumlah_uang.get())
     print( 'keterangan', keterangan.get())
@@ -17,32 +17,41 @@ def add_data():
     jumlah_uang.set('')
     keterangan.set('')
 
-ttk.Label(mainframe, text="Jumlah Uang").pack()
+leftframe = ttk.Frame(mainframe, padding="3 3 12 12")
+leftframe.grid(column=0, row=0, sticky=(N, W, E, S))
+
+ttk.Label(leftframe, text="Jumlah Uang").grid(column=0, row=0, sticky=(N))
 
 jumlah_uang = StringVar()
-jumlah_uang_entry = ttk.Entry(mainframe, width=20, textvariable=jumlah_uang)
-jumlah_uang_entry.pack()
+jumlah_uang_entry = ttk.Entry(leftframe, width=20, textvariable=jumlah_uang)
+jumlah_uang_entry.grid(column=0, row=1, sticky=(N))
 
-ttk.Label(mainframe, text="Keterangan").pack()
+ttk.Label(leftframe, text="Keterangan").grid(column=0, row=2, sticky=(N))
 
 keterangan = StringVar()
-keterangan_entry = ttk.Entry(mainframe, width=20, textvariable=keterangan)
-keterangan_entry.pack()
+keterangan_entry = ttk.Entry(leftframe, width=20, textvariable=keterangan)
+keterangan_entry.grid(column=0, row=3, sticky=(N))
 
-ttk.Button(mainframe, text="Tambah Catatan", command=add_data).pack()
+ttk.Button(leftframe, text="Tambah Catatan", command=add_data).grid(column=0, row=4, sticky=(N), pady=10)
 
-list_uang = Listbox(mainframe, height=32)
-list_uang.pack()
-s = ttk.Scrollbar(root, orient=VERTICAL, command=list_uang.yview)
-s.grid(column=1, row=0, sticky=(N,S))
+list_uang = Listbox(mainframe, height=10, width=40)
+list_uang.grid(column=1, row=0, sticky=(E, W, N, S))
+s = ttk.Scrollbar(mainframe, orient=VERTICAL, command=list_uang.yview)
+s.grid(column=2, row=0, sticky=(N,S))
 list_uang['yscrollcommand'] = s.set
 
 total_uang = StringVar(value="Total: 0")
 ttk.Label(root, textvariable=total_uang).grid(column=0, row=1)
 
-root.geometry('300x200')
+mainframe.columnconfigure(0, weight=1)
+
+root.geometry('600x300')
 
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(0, weight=1)
+
+# Tombol Enter untuk menambahkan data
+root.bind("<Return>", add_data)
+
 root.mainloop()
 
